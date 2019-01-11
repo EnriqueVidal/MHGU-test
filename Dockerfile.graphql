@@ -1,0 +1,10 @@
+FROM node:alpine
+
+WORKDIR /opt/src
+
+COPY ./graphql/package.json .
+COPY ./graphql/package-lock.json .
+
+RUN npm install --ignore-engines
+
+#:set ft=dockerfile
