@@ -2,8 +2,9 @@ const path = require('path');
 const externals = require('webpack-node-externals');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const webpack = require('webpack');
+const dotEnv = require('dotenv-webpack');
 
-const fromRoot = path.resolve.bind(__dirname)
+const fromRoot = path.resolve.bind(__dirname);
 
 module.exports = {
   mode: 'production',
@@ -42,12 +43,11 @@ module.exports = {
   },
 
   plugins: [
+    new dotEnv(),
     new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-        npm_package_name: JSON.stringify(process.env.npm_package_name),
-        npm_package_version: JSON.stringify(process.env.npm_package_version),
-      },
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+      'process.env.npm_package_name': JSON.stringify(process.env.npm_package_name),
+      'process.env.npm_package_version': JSON.stringify(process.env.npm_package_version),
     })
   ],
 };

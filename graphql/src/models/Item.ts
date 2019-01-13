@@ -1,100 +1,152 @@
-import database from 'database';
-import Sequelize from 'sequelize';
+import * as Sequelize from 'sequelize';
+import { SequelizeAttributes } from 'typings/SequelizeAttributes';
+import { ItemSkillTreeInstance } from './ItemSkillTree';
+import { SkillTreeInstance } from './SkillTree';
 
-const Item = database.define('item',
-  {
+interface ItemAttributes {
+  id?: number;
+  name: string;
+  nameDE?: string;
+  nameFR?: string;
+  nameES?: string;
+  nameIT?: string;
+  nameJP?: string;
+  rarity: number;
+  carryCapacity?: number;
+  buy: number;
+  sell: number;
+  description?: string;
+  descriptionDE?: string;
+  descriptionFR?: string;
+  descriptionES?: string;
+  descriptionIT?: string;
+  descriptionJP?: string;
+  icon: string;
+  color: number;
+  account?: number;
+  type?: string;
+  subType?: string;
+}
+
+export interface ItemInstance extends Sequelize.Instance<ItemAttributes>, ItemAttributes {
+  getItemSkillTrees: Sequelize.HasManyGetAssociationsMixin<ItemSkillTreeInstance>;
+  getSkillTrees: Sequelize.BelongsToManyGetAssociationsMixin<SkillTreeInstance>;
+}
+
+export type ItemModel = Sequelize.Model<ItemInstance, ItemAttributes>;
+
+export default (sequelize: Sequelize.Sequelize, DataTypes: Sequelize.DataTypes): ItemModel => {
+  const attributes: SequelizeAttributes<ItemAttributes> = {
     id: {
-      type: Sequelize.INTEGER,
-      primaryKey: true,
       autoIncrement: true,
       field: '_id',
+      primaryKey: true,
+      type: DataTypes.INTEGER,
     },
 
-    name: Sequelize.INTEGER,
+    name: DataTypes.INTEGER,
 
     nameDE: {
-      type: Sequelize.STRING,
       field: 'name_de',
+      type: DataTypes.STRING,
     },
 
     nameFR: {
-      type: Sequelize.STRING,
       field: 'name_fr',
+      type: DataTypes.STRING,
     },
 
     nameES: {
-      type: Sequelize.STRING,
       field: 'name_es',
+      type: DataTypes.STRING,
     },
 
     nameIT: {
-      type: Sequelize.STRING,
       field: 'name_it',
+      type: DataTypes.STRING,
     },
 
     nameJP: {
-      type: Sequelize.STRING,
       field: 'name_ja',
+      type: DataTypes.STRING,
     },
 
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
 
     subType: {
-      type: Sequelize.STRING,
       field: 'sub_type',
+      type: DataTypes.STRING,
     },
 
-    rarity: Sequelize.INTEGER,
+    rarity: DataTypes.INTEGER,
 
     carryCapacity: {
-      type: Sequelize.INTEGER,
       field: 'carry_capacity',
+      type: DataTypes.INTEGER,
     },
 
-    buy: Sequelize.INTEGER,
+    buy: DataTypes.INTEGER,
 
-    sell: Sequelize.INTEGER,
+    sell: DataTypes.INTEGER,
 
-    description: Sequelize.STRING,
+    description: DataTypes.STRING,
 
     descriptionDE: {
-      type: Sequelize.STRING,
       field: 'description_de',
+      type: DataTypes.STRING,
     },
 
     descriptionFR: {
-      type: Sequelize.STRING,
       field: 'description_fr',
+      type: DataTypes.STRING,
     },
 
     descriptionES: {
-      type: Sequelize.STRING,
       field: 'description_es',
+      type: DataTypes.STRING,
     },
 
     descriptionIT: {
-      type: Sequelize.STRING,
       field: 'description_it',
+      type: DataTypes.STRING,
     },
 
     descriptionJP: {
-      type: Sequelize.STRING,
       field: 'description_ja',
+      type: DataTypes.STRING,
     },
 
     icon: {
-      type: Sequelize.STRING,
       field: 'icon_name',
+      type: DataTypes.STRING,
     },
 
     color: {
-      type: Sequelize.INTEGER,
       field: 'icon_color',
+      type: DataTypes.INTEGER,
     },
 
-    account: Sequelize.INTEGER,
+    account: DataTypes.INTEGER,
+  };
 
-  },
-  { timestamps: false });
+  const tableOptions = {
+    tableName: 'items',
+    timestamps: false,
+  };
 
-export default Item;
+  const Item = sequelize.define<ItemInstance, ItemAttributes>(
+    'Item',
+    attributes,
+    tableOptions,
+  );
+
+  Item.associate = (models: Sequelize.Models) => {
+    Item.hasMany(models.ItemSkillTree, { foreignKey: 'item_id' });
+    Item.belongsToMany(models.SkillTree, {
+      through: models.ItemSkillTree,
+      foreignKey: 'item_id',
+     });
+  };
+
+  return Item;
+};

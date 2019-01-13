@@ -1,6 +1,15 @@
 {
   "compilerOptions": {
-    "experimentalDecorator": true,
-    "emitDecoratorMetadata": true
-  }
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./src",
+    "lib": [ "es2015" ],
+  },
+  "exclude": [
+    "node_modules",
+    "test"    
+  ],
+  "include": [
+    "src/**/*",
+    "config/**/*"
+  ]
 }

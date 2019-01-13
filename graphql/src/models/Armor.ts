@@ -1,71 +1,109 @@
-import database from 'database';
-import Sequelize from 'sequelize';
+import * as Sequelize from 'sequelize';
+import { SequelizeAttributes } from 'typings/SequelizeAttributes';
+import { FamilyInstance } from './Family';
+import { ItemInstance } from './Item';
 
-import Item from './Item';
+interface ArmorAttributes {
+  id?: number;
+  slot: string;
+  defense: number;
+  maxDefense: number;
+  familyId: number;
+  gender: number;
+  hunterType: number;
+  dragonRes: number;
+  fireRes: number;
+  iceRes: number;
+  thunderRes: number;
+  waterRes: number;
+  numSlots: number;
+}
 
-const Armor = database.define('armor', 
-  {
-    id: {
-      type: Sequelize.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-      field: '_id',
-    },
+export interface ArmorInstance extends Sequelize.Instance<ArmorAttributes>, ArmorAttributes {
+  getFamily: Sequelize.BelongsToGetAssociationMixin<FamilyInstance>;
+  getItem: Sequelize.HasOneGetAssociationMixin<ItemInstance>;
+}
 
-    slot: Sequelize.STRING,
+export type ArmorModel = Sequelize.Model<ArmorInstance, ArmorAttributes>;
 
-    defense: Sequelize.INTEGER,
-
-    maxDefense: {
-      type: Sequelize.INTEGER,
-      field: 'max_defense',
-    },
-
-    fireRes: {
-      type: Sequelize.INTEGER,
-      field: 'fire_res',
-    },
-
-    thunderRes: {
-      type: Sequelize.INTEGER,
-      field: 'thunder_res',
-    },
+export default (sequelize: Sequelize.Sequelize, DataTypes: Sequelize.DataTypes): ArmorModel => {
+  const attributes: SequelizeAttributes<ArmorAttributes> = {
+    defense: DataTypes.INTEGER,
 
     dragonRes: {
-      type: Sequelize.INTEGER,
       field: 'dragon_res',
-    },
-
-    waterRes: {
-      type: Sequelize.INTEGER,
-      field: 'water_res',
-    },
-
-    iceRes: {
-      type: Sequelize.INTEGER,
-      field: 'ice_res',
-    },
-
-    gender: Sequelize.INTEGER,
-
-    hunterType: {
-      type: Sequelize.INTEGER,
-      field: 'hunter_type',
-    },
-
-    numSlots: {
-      type: Sequelize.INTEGER,
-      field: 'num_slots',
+      type: DataTypes.INTEGER,
     },
 
     familyId: {
-      type: Sequelize.INTEGER,
       field: 'family',
-    }
-  },
-  {
+      type: DataTypes.INTEGER,
+    },
+
+    fireRes: {
+      field: 'fire_res',
+      type: DataTypes.INTEGER,
+    },
+
+    gender: DataTypes.INTEGER,
+
+    hunterType: {
+      field: 'hunter_type',
+      type: DataTypes.INTEGER,
+    },
+
+    iceRes: {
+      field: 'ice_res',
+      type: DataTypes.INTEGER,
+    },
+
+    id: {
+      autoIncrement: true,
+      field: '_id',
+      primaryKey: true,
+      type: DataTypes.INTEGER,
+    },
+
+    maxDefense: {
+      field: 'max_defense',
+      type: DataTypes.INTEGER,
+    },
+
+    numSlots: {
+      field: 'num_slots',
+      type: DataTypes.INTEGER,
+    },
+
+    slot: DataTypes.STRING,
+
+    thunderRes: {
+      field: 'thunder_res',
+      type: DataTypes.INTEGER,
+    },
+
+    waterRes: {
+      field: 'water_res',
+      type: DataTypes.INTEGER,
+    },
+  };
+
+  const tableOptions = {
     tableName: 'armor',
     timestamps: false,
-  });
+  };
 
-export default Armor;
+  const Armor = sequelize.define<ArmorInstance, ArmorAttributes>(
+    'Armor',
+    attributes,
+    tableOptions,
+  );
+
+  Armor.associate = (models: Sequelize.Models) => {
+    Armor.belongsTo(models.Family, { foreignKey: 'family' });
+
+    // This is missing the lookup by type =  'Armor'
+    Armor.hasOne(models.Item, { foreignKey: '_id' });
+  };
+
+  return Armor;
+};

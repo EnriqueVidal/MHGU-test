@@ -1,8 +1,10 @@
 const webpack = require('webpack');
 const externals = require('webpack-node-externals');
 const path = require('path');
+const dotEnv = require('dotenv-webpack');
+
 const isCoverage = process.env.MOCHA_ENV === 'coverage';
-const fromRoot = path.resolve.bind(__dirname)
+const fromRoot = path.resolve.bind(__dirname);
 
 const instrumenter = {
     test:/\.[jt]s$/,
@@ -40,6 +42,10 @@ module.exports = {
         fromRoot('node_modules'),
       ],
     },
+
+    plugins: [
+        new dotEnv(),
+    ],
 
     module: {
         rules,

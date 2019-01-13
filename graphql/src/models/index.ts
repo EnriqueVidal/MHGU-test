@@ -1,29 +1,28 @@
-import Armor from './Armor';
-import Family from './Family';
-import Item from './Item';
-import ItemSkillTree from './ItemSkillTree';
-import SkillTree from './SkillTree';
+import sequelize from 'database';
+import Sequelize from 'sequelize';
 
-// Declare associations to prevent models from requiring each other here:
+import { DbInterface } from 'typings/DBInterface';
 
-Armor.Family  = Armor.belongsTo(Family, { foreignKey: 'family' });
-Armor.Item    = Armor.hasOne(Item, { foreignKey: '_id' });
-Family.Armor  = Family.hasMany(Armor, { foreignKey: 'family' });
+import ArmorFactory from './Armor';
+import FamilyFactory from './Family';
+import ItemFactory from './Item';
+import ItemSkillTreeFactory from './ItemSkillTree';
+import SkillTreeFactory from './SkillTree';
 
-Item.ItemSkillTrees     = Item.hasMany(ItemSkillTree);
-Item.SkillTrees         = Item.belongsToMany(SkillTree, { through: ItemSkillTree });
-ItemSkillTree.SkillTree = ItemSkillTree.belongsTo(SkillTree);
-
-
-export { Armor };
-export { Family };
-export { Item };
-export { ItemSkillTree };
-
-const models = {
-  Armor,
-  Family,
-  Item,
+const models: DbInterface = {
+  Sequelize,
+  sequelize,
+  Armor:          ArmorFactory(sequelize, Sequelize),
+  Family:         FamilyFactory(sequelize, Sequelize),
+  Item:           ItemFactory(sequelize, Sequelize),
+  ItemSkillTree:  ItemSkillTreeFactory(sequelize, Sequelize),
+  SkillTree:      SkillTreeFactory(sequelize, Sequelize),
 };
+
+Object.keys(models).forEach((name) => {
+  if (typeof models[name].associate === 'function') {
+    models[name].associate(models);
+  }
+});
 
 export default models;

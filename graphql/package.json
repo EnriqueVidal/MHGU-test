@@ -10,7 +10,7 @@
     "lint": "tslint 'src/**/*.ts'",
     "test": "cross-env NODE_ENV=test npx mocha-webpack --recursive",
     "test:coverage": "cross-env MOCHA_ENV=coverage nyc npm test",
-    "start": "cross-env NODE_PATH=./src:./config nodemon -e js,ts ./src --exec babel-node --extensions \".js,.ts\""
+    "start": "cross-env NODE_PATH=./src nodemon -e js,ts ./src --exec babel-node --extensions \".js,.ts\""
   },
   "keywords": [
     "boilerplate",
@@ -23,6 +23,7 @@
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.2.2",
     "@babel/node": "^7.2.2",
+    "@babel/plugin-proposal-async-generator-functions": "^7.2.0",
     "@babel/plugin-proposal-class-properties": "^7.2.3",
     "@babel/plugin-proposal-decorators": "^7.2.3",
     "@babel/plugin-proposal-object-rest-spread": "^7.2.0",
@@ -30,7 +31,9 @@
     "@babel/preset-env": "^7.2.3",
     "@babel/preset-typescript": "^7.1.0",
     "@babel/register": "^7.0.0",
+    "@types/graphql": "^14.0.4",
     "@types/node": "^10.12.18",
+    "@types/sequelize": "^4.27.33",
     "babel-loader": "^8.0.4",
     "chai": "^4.2.0",
     "coveralls": "^3.0.2",
@@ -52,19 +55,16 @@
     "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
-    "dataloader-sequelize": "^1.7.6",
+    "@babel/runtime": "^7.2.0",
+    "dataloader": "^1.4.0",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
     "express-graphql": "^0.7.1",
     "graphql": "^14.0.2",
-    "graphql-relay": "^0.5.5",
-    "graphql-sequelize": "^9.3.1",
     "lodash": "^4.17.11",
     "pg": "^7.7.1",
     "pg-hstore": "^2.3.2",
-    "reflect-metadata": "^0.1.12",
-    "sequelize": "^4.42.0",
-    "sequelize-typescript": "^0.6.6"
+    "sequelize": "^4.42.0"
   },
   "engines": {
     "node": ">= 11.0.0",

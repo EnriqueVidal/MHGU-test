@@ -12,6 +12,8 @@ services:
       - ./graphql/config/nginx.conf:/etc/nginx/conf.d/default.conf
 
   graphql:
+    env_file:
+      - ./graphql/.env
     build:
       context: .
       dockerfile: Dockerfile.graphql

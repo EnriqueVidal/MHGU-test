@@ -5,7 +5,9 @@
   ],
   "plugins": [
     ["@babel/proposal-class-properties"],
-    ["@babel/proposal-decorators", { legacy: true }],
-    ["@babel/proposal-object-rest-spread"]
+    ["@babel/proposal-decorators", { "legacy": true }],
+    ["@babel/proposal-async-generator-functions"],
+    ["@babel/proposal-object-rest-spread"],
+    ["@babel/plugin-transform-runtime"]
   ]
 }
