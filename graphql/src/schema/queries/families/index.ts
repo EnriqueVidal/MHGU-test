@@ -5,11 +5,11 @@ import {
   GraphQLString,
 } from 'graphql';
 
-import Resolvers from './resolvers';
-import Types from './types';
+import FamilyType from './types/Family';
+import { families } from './types/resolvers';
 
 export default {
-  type: new GraphQLList(Types.Family),
+  type: new GraphQLList(FamilyType),
   args: {
     query: {
       type: new GraphQLNonNull(GraphQLString),
@@ -19,5 +19,5 @@ export default {
       type: GraphQLInt,
     },
   },
-  resolve: Resolvers.families,
+  resolve: families,
 };

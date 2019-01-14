@@ -31,6 +31,7 @@
     "@babel/preset-env": "^7.2.3",
     "@babel/preset-typescript": "^7.1.0",
     "@babel/register": "^7.0.0",
+    "@types/bluebird": "^3.5.25",
     "@types/graphql": "^14.0.4",
     "@types/node": "^10.12.18",
     "@types/sequelize": "^4.27.33",

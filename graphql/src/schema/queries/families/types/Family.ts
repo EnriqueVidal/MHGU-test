@@ -6,6 +6,7 @@ import {
  } from 'graphql';
 
 import ArmorType from './Armor';
+import { armors } from './resolvers';
 
 const FamilyType = new GraphQLObjectType({
   name: 'Family',
@@ -26,9 +27,7 @@ const FamilyType = new GraphQLObjectType({
     },
     armors: {
       type: new GraphQLList(ArmorType),
-      resolve(parent, args, { armorLoader }) {
-        return armorLoader.load(parent.id);
-      },
+      resolve: armors,
     },
   }),
 });

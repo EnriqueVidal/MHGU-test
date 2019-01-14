@@ -5,6 +5,7 @@ import {
 } from 'graphql';
 
 import ItemType from './Item';
+import { item } from './resolvers';
 
 const ArmorType = new GraphQLObjectType({
   name: 'Armor',
@@ -52,9 +53,7 @@ const ArmorType = new GraphQLObjectType({
     },
     item: {
       type: ItemType,
-      resolve(parent, args, { itemLoader }) {
-        return itemLoader.load(parent.id);
-      },
+      resolve: item,
     },
   }),
 });

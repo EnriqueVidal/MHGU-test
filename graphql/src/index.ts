@@ -21,8 +21,8 @@ app.use('/graphql', graphqlHTTP({
   schema: Schema,
   context: {
     models,
-    armorLoader: new DataLoader((keys) => armorLoader(keys, models)),
-    itemLoader: new DataLoader((keys) => itemLoader(keys, models)),
+    armorLoader: new DataLoader((keys: number[]) => armorLoader(keys, models)),
+    itemLoader: new DataLoader((keys: number[]) => itemLoader(keys, models)),
   },
 }));
 
