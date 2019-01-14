@@ -1,0 +1,10 @@
+FROM node:alpine
+
+WORKDIR /opt/src
+
+COPY ./web/package.json .
+COPY ./web/package-lock.json .
+
+RUN npm install --ignore-engines
+
+#:set ft=dockerfile

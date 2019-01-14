@@ -1,0 +1,42 @@
+{
+  "presets": [
+    "@babel/env",
+    "@babel/react",
+    "@babel/typescript"
+  ],
+  "plugins": [
+    "@babel/proposal-class-properties",
+    "@babel/proposal-object-rest-spread"
+  ],
+  "env": {
+    "production": {
+      "plugins": ["transform-react-remove-prop-types"]
+    },
+    "node": {
+      "plugins": [
+        [
+          "css-modules-transform",
+          {
+            "extensions": [
+              ".css"
+            ],
+            "generateScopedName": "[name]-[local]-[hash:8]"
+          }
+        ],
+        [
+          "transform-assets-import-to-string",
+          {
+            "baseDir": "/",
+            "flatten": true,
+            "extensions": [
+              ".gif",
+              ".jpg",
+              ".png",
+              ".svg"
+            ]
+          }
+        ]
+      ]
+    }
+  }
+}
